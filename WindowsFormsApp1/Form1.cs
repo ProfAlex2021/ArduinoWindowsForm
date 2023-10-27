@@ -20,6 +20,7 @@ namespace WindowsFormsApp1
             InitializeComponent();
             usb = new SerialPort("COM3", 9600);
             usb.DataReceived += Usb_DataReceived;
+            usb.Open();
         }
 
         private void Usb_DataReceived(object sender, SerialDataReceivedEventArgs e)

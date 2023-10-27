@@ -18,27 +18,42 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
-            usb = new SerialPort("COM5", 9600);
+            usb = new SerialPort("COM3", 9600);
             usb.DataReceived += Usb_DataReceived;
         }
 
         private void Usb_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            string linha = (sender as SerialPort).ReadLine();
+            string linha = (sender as SerialPort).ReadLine().Trim('\r');
+            switch (linha)
+            {
+                case "1":
+                    TrocarCor(true);
+                    ligado = true;
+                    break;
+                case "0":
+                    TrocarCor(false);
+                    ligado = false;
+                    break;
+            }
         }
 
         bool ligado = false;
         private void Button1_Click(object sender, EventArgs e)
         {
-            if(ligado)
+            TrocarCor(ligado);
+            ligado = !ligado;
+        }
+
+        private void TrocarCor(bool estado)
+        {
+            if (estado)
             {
                 pictureBox1.BackColor = Color.Blue;
-                ligado = false;
             }
             else
             {
                 pictureBox1.BackColor = SystemColors.Control;
-                ligado = true;
             }
         }
     }
